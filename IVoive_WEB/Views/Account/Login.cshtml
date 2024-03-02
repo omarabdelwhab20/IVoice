@@ -1,0 +1,68 @@
+﻿@model IVoive_WEB.ViewModel.LoginViweModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SignIn</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.css"
+          integrity="sha512-Cb0WDP6lVyVaQJulFMEOBGpkgqU6UAOEBpthbb9BfdhmUXnmYQwobuCm6Xp2YYL6Pd/l0ZA5Up/ijp0fu+nFpQ=="
+          crossorigin="anonymous" />
+    <link rel="stylesheet" href="~/css/signin.css">
+</head>
+<body>
+    <div class="header">
+        <div class="container-two">
+            <a class="logo" asp-controller="Home" asp-action="Index">IVOICE</a>
+        </div>
+
+    </div>
+
+    <div class="container" id="container">
+        <div class="card-left">
+            <div class="content" id="SignUp">
+                <h1>Hello Friends!</h1>
+                <p>
+                    Enter Your Personal Details and
+                    start your journey with us
+                </p>
+                <a asp-action="Register" asp-controller="Account"> <button id="btn-signup">Register</button> </a>
+            </div>
+        </div>
+        <div class="form-container">
+            <div class="form" id="Login">
+                <div class="h1-signin"> <h1>Login</h1> </div>
+                    <form asp-action="Login" id="form-email-in">
+                    <span class="logval">
+                       <div asp-validation-summary="All"></div>
+                        </span>
+                    <div class="form-group">
+                        <input asp-for="UserName" class="form-control" placeholder="Username" required="required" />
+                        <span asp-validation-for="UserName" class="text-danger"></span>
+                    </div>
+                    <br />
+                    <div class="form-group">
+                        <input asp-for="Password" class="form-control" placeholder="Password" required="required" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                    @* @Html.ActionLink("Forgot Password?", "ForgotPassword", "Account", null, new { @class = "forgot-password" }) <!--لسة هنعمله--> *@
+                    <br />
+                    <button type="submit" class="btn" value="Login">Login</button>
+                 </form>
+            </div>
+        </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $(".btn-signup, .btn-signin").click(function () {
+                $("#container").toggleClass("active");
+            });
+        });
+    </script>
+</body>
+</html>

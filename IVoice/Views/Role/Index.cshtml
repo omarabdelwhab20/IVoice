@@ -1,0 +1,22 @@
+﻿@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="containerrole">
+    <h1 class="listroles">List Of Roles</h1>
+
+    <table class="table table-borderd table-hover mt-2">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+        </tr>
+        @foreach (var item in ViewBag.Roles)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Name</td>
+            </tr>
+        }
+    </table>
+    <a asp-action="NewRole" class="role-btn">New Role</a>
+</div>

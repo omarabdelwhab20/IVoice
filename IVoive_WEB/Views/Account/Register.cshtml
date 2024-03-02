@@ -1,0 +1,76 @@
+﻿@model IVoive_WEB.ViewModel.Registerviwemodel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SignUp</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.css"
+          integrity="sha512-Cb0WDP6lVyVaQJulFMEOBGpkgqU6UAOEBpthbb9BfdhmUXnmYQwobuCm6Xp2YYL6Pd/l0ZA5Up/ijp0fu+nFpQ=="
+          crossorigin="anonymous" />
+    <link rel="stylesheet" href="~/css/signup.css">
+</head>
+<body>
+    <div class="header">
+        <div class="container-two">
+            <a href="#" class="logo">IVOICE</a>
+        </div>
+    </div>
+    <div class="container" id="container">
+        <div class="card-left card">
+            <div class="content" id="SignIn">
+                <h1>Welcome Back!</h1>
+                <p>To keep connected with us please login with your personal info.</p>
+                <a asp-action="Login" asp-controller="Account"> <button id="btn-signup">Login</button> </a>
+              
+            </div>
+        </div>
+        <div class="form-container form-c">
+            <div class="form" id="Create">
+                <form asp-action="Register" id="form-email-in">
+                  @*   <div asp-validation-summary="All" class="text-danger"></div> *@
+                    <div class="h1-signup"> <h1>Create Account</h1> </div>
+                    <div class="form-group">
+                        <input asp-for="Username" class="form-control" placeholder="Username" required="required" />
+                        <span asp-validation-for="Username" class="text-danger"></span>
+                    </div>
+                    <br />
+                    <div class="form-group">
+                        <input asp-for="Email" class="form-control" placeholder="Email" required="required" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <br /> 
+                    <div class="form-group">
+                        <input asp-for="Password" class="form-control" placeholder="Password" required="required" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                    <br />
+                    <div class="form-group">
+                        <input asp-for="ConfirmPassword" class="form-control" placeholder="ConfirmPassword" required="required" />
+                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                    </div>
+                    <br />
+                    <div class="form-group">
+                        <input asp-for="Address" class="form-control" placeholder="Address" required="required" />
+                        <span asp-validation-for="Address" class="text-danger"></span>
+                    </div>
+                   
+                    <button type="submit" class="btn" value="Register">Register</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#btn-signup, #btn-signin").click(function () {
+                $("#container").toggleClass("active");
+            });
+        });
+    </script>
+</body>
+</html>

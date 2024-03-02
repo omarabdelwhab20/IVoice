@@ -1,0 +1,24 @@
+﻿@model IVoive_WEB.ViewModel.RoleViewModel
+
+@{
+    ViewData["Title"] = "New";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h1>Add New Role</h1>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="NewRole">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="RoleName" class="control-label font-weight-bold"></label>
+                <input asp-for="RoleName" class="form-control" />
+                <span asp-validation-for="RoleName" class="text-danger"></span>
+            </div>
+            <div >
+                <input type="submit" value="Create" class="role-btn" />
+            </div>
+        </form>
+    </div>
+</div>
+

@@ -1,0 +1,75 @@
+﻿@using Microsoft.AspNetCore.Http
+
+@model IVoive_WEB.ViewModel.ProductViewModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Create</h1>
+
+<h4>ProductViewModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ImageFile" class="control-label"></label>
+                <input asp-for="ImageFile" type="file" class="form-control"
+                       data-rule-extension="@FileSettings.AllowedExtensions.Replace(".", string.Empty)"
+                       data-msg-extension="Not allowed extension"
+                       data-rule-filesize="@FileSettings.MaxFileSizeInBytes"
+                       data-msg-filesize="Maximum allowed size is @FileSettings.MaxFileSizeInMb MB">
+                <small class="form-text text-muted">Only @FileSettings.AllowedExtensions files are allowed with max size @(FileSettings.MaxFileSizeInMb)MB.</small>
+                <span asp-validation-for="ImageFile" class="text-danger d-block"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+
+            <div class="col-md-6 d-flex justify-content-center pt-4 overflow-hidden">
+                <img class="cover-preview d-none" alt="ImageFile" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/filesize-validator.js" asp-append-version="true"></script>
+    <script src="~/js/game-form.js" asp-append-version="true"></script>
+
+    <script>
+        $.validator.addMethod('filesize', function (value, element, param) {
+            return this.optional(element) || element.files[0].size <= param;
+        });
+
+        $(document).ready(function () {
+            $('#ImageFile').on('change', function () {
+                $('.cover-preview').attr('src', window.URL.createObjectURL(this.files[0])).removeClass('d-none');
+            });
+        });
+    </script>
+}
