@@ -57,7 +57,9 @@ namespace IVoice.Reopsitories
                     {
                         ProductId = productId,
                         ShoppingCartId = cart.Id,
-                        Quantity = qty
+                        Quantity = qty,
+                        UnitPrice=product.Price
+                      
                         
                     };
                     _db.CartDetails.Add(cartItem);

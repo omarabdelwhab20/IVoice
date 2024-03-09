@@ -8,6 +8,7 @@ namespace IVoice.Models
         public string Name { get; set; }
         [MaxLength(2500)]
         public string Description { get; set; }
+        [Required]
         public double Price { get; set; }
         [MaxLength(500)]
         public string Cover { get; set; } = string.Empty;
