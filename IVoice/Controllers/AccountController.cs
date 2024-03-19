@@ -9,11 +9,13 @@ namespace IVoice.Controllers
     {
         private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> signInManager;
+        private readonly ApplicationDbContext context;
 
-        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager,ApplicationDbContext context)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
+            this.context = context;
         }
         [HttpGet]
         public IActionResult Register()
@@ -31,14 +33,12 @@ namespace IVoice.Controllers
                 userModel.Email = newuservm.Email;
                 userModel.PasswordHash = newuservm.Password;
                 userModel.Address = newuservm.Address;
-                //save db
+
                 IdentityResult result = await userManager.CreateAsync(userModel, newuservm.Password);
                 if (result.Succeeded)
                 {
-                    //register form add as a user
                     await userManager.AddToRoleAsync(userModel, "User");
-                    //creat cookie
-                    //await signInManager.SignInAsync(userModel, false);
+                    await signInManager.SignInAsync(userModel, false);
 
                     return RedirectToAction("Login", "Account");
                 }
@@ -46,12 +46,21 @@ namespace IVoice.Controllers
                 {
                     foreach (var erroritem in result.Errors)
                     {
-                        ModelState.AddModelError("Password", erroritem.Description);
+                        // Add errors to the correct property in the ModelState
+                        if (erroritem.Code == "DuplicateUserName")
+                        {
+                            ModelState.AddModelError("Username", erroritem.Description);
+                        }
+                        else
+                        {
+                            ModelState.AddModelError(string.Empty, erroritem.Description);
+                        }
                     }
                 }
             }
             return View(newuservm);
         }
+
         [HttpGet]
         public IActionResult Login()
         {

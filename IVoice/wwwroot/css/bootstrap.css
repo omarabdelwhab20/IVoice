@@ -153,13 +153,13 @@ sup {
 }
 
 a {
-  color: #007bff;
+  color: white;
   text-decoration: none;
   background-color: transparent;
 }
 
 a:hover {
-  color: #0056b3;
+  color: white;
   text-decoration: underline;
 }
 
@@ -1560,7 +1560,7 @@ pre code {
 }
 
 .table-striped tbody tr:nth-of-type(odd) {
-  background-color: rgba(0, 0, 0, 0.05);
+  
 }
 
 .table-hover tbody tr:hover {
@@ -5187,9 +5187,9 @@ a.badge-dark:focus, a.badge-dark.focus {
 }
 
 .alert-warning {
-  color: #856404;
-  background-color: #fff3cd;
-  border-color: #ffeeba;
+  color: black;
+  background-color: white;
+  border-color: white;
 }
 
 .alert-warning hr {

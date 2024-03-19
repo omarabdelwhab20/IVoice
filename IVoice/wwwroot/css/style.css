@@ -5,9 +5,20 @@ body {
   background-color: #ffffff;
   overflow-x: hidden;
 }
+.error-message {
+    color: black; /* Set text color to red */
+    font-size: 18px; /* Set font size */
+    font-weight: bold; /* Make text bold */
+    margin-top: 5px; /* Add space above the error message */
+    text-align: center; /* Center the text horizontally */
+  /*  display:flex;*/
+    justify-content:center;
+    align-items:center;
+    font-weight:bold;
+}
 
 .layout_padding {
-  padding: 90px 0;
+    padding: 90px 0;
 }
 
 .layout_margin {
@@ -853,12 +864,109 @@ a:focus {
   -webkit-transform: translateY(-3px);
           transform: translateY(-3px);
 }
+.containerrole {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 75vh; /* Adjust if necessary */
+}
+
+.table {
+    display: table;
+    border-collapse: separate;
+    box-sizing: border-box;
+    text-indent: initial;
+    border-spacing: 2px;
+    border-color: gray;
+    background-color: white;
+}
+
+    .table th, .table td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .table th {
+       /* background-color: #f2f2f2;*/ /* Light gray background for table header */
+    }
+
+.role-btn {
+    display: inline-block;
+    padding: 5px 25px;
+    background-color: #f8842b;
+    color: #ffffff;
+    border-radius: 5px;
+    -webkit-transition: all 0.3s;
+    transition: all 0.3s;
+    margin-right: 89%;
+    border: 1px solid #f8842b;
+}
+    .role-btn:hover {
+        color: #ffffff;
+        -webkit-transform: translateY(-3px);
+        transform: translateY(-3px);
+    }
+
+
+
+.listroles {
+    display: block;
+    font-size: 1.5em;
+    margin-top: 20px; /* Adjust the value as needed */
+    margin-right: 0; /* Remove the margin on the right */
+    position: relative; /* Add relative positioning */
+    left: -2px; /* Adjust to align with the table */
+    color: white;
+    font-weight: bold;
+    margin-right: 87%;
+}
+.newrolecontainer {
+    position: absolute;
+    top: 50%;
+    right: 50%;
+    transform: translate(50%,-50%);
+}
+
+
+.btnrole {
+    display: inline-block;
+    padding: 5px 25px;
+    background-color: #f8842b;
+    color: #ffffff;
+    border-radius: 5px;
+    -webkit-transition: all 0.3s;
+    transition: all 0.3s;
+    border: 1px solid #f8842b;
+}
+
+    .btnrole:hover {
+        color: #ffffff;
+        -webkit-transform: translateY(-3px);
+        transform: translateY(-3px);
+    }
+
+.newrolestyle {
+    border-radius: 10px;
+    padding: 20px;
+    width: 950px;
+    position: absolute;
+    top: 50%;
+    right: 50%;
+    transform: translate(50%,-50%);
+    background-color: #eee;
+  
+}
+
+
+
 
 /* end info section */
 /* footer section*/
 .footer_section {
-  position: relative;
-  text-align: center;
+    position: relative;
+    text-align: center;
 }
 
 .footer_section p {
@@ -870,3 +978,61 @@ a:focus {
   color: inherit;
 }
 /*# sourceMappingURL=style.css.map */
+
+@media (max-width: 768px){
+    .role-btn {
+        margin-right: 0;  
+    }
+
+    .listroles {
+        margin-right: 0;  
+    }
+}
+@media (max-width: 992px) {
+    .role-btn {
+        margin-right: 0;
+    }
+
+    .listroles {
+        margin-right: 0;
+    }
+}
+@media (max-width: 1120px) {
+    .role-btn {
+        margin-right: 0;
+    }
+
+    .listroles {
+        margin-right: 0;
+    }
+}
+@media (max-width: 1300px) {
+    .role-btn {
+        margin-right: 0;
+    }
+
+    .listroles {
+        margin-right: 0;
+    }
+}
+
+
+
+
+
+@media screen and (max-width: 768px) {
+    .newrolestyle {
+        
+        width: 90%;
+        max-width: 100%;
+        padding: 10px;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .newrolestyle {
+        width: 90%;
+        max-width: 100%;
+        padding: 10px;
+    }
+}

@@ -1,59 +1,149 @@
 ﻿@model ShoppingCart
 @{
     ViewData["Title"] = "GetUserCart";
+    Layout = "~/Views/Shared/_CustomLayout.cshtml";
 }
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.css"
+          integrity="sha512-Cb0WDP6lVyVaQJulFMEOBGpkgqU6UAOEBpthbb9BfdhmUXnmYQwobuCm6Xp2YYL6Pd/l0ZA5Up/ijp0fu+nFpQ=="
+          crossorigin="anonymous" />
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" />
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
 
-<div style="width:90%;margin:auto" class="mt-2">
-    @if (Model != null && Model.CartDetails != null && Model.CartDetails.Count > 0)
-    {
-        <h5>My Cart</h5>
+    <!-- font awesome style -->
+    <link href="css/font-awesome.min.css" rel="stylesheet" />
+    <!-- <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.1.0/mdb.min.css"
+      rel="stylesheet"
+    /> -->
+    <!-- Custom styles for this template -->
+    <link href="css/style.css" rel="stylesheet" />
+    <link href="~/css//cart.css" rel="stylesheet" />
+    <!-- responsive style -->
+    <link href="css/responsive.css" rel="stylesheet" />
+    <style>
+        /* Add border styling for table */
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
 
-        <table class="table table-striped">
-            <tr>
-                <th>Product</th>
-                <th>Image</th>
-                <th>Unit Price(INR)</th>
-                <th>Total Price</th>
-                <th>Action</th>
-            </tr>
-            @foreach (var item in Model.CartDetails)
-            {
-                <tr>
-                    <td>@item.product.Name</td>
-                    <td>
-                        @if (string.IsNullOrEmpty(item.product.Cover))
-                        {
-                            <img src="/images/noimage.png" style="width:80px;height:100px" />
-                        }
+        th, td {
+            border: 1px solid #eee;
+            text-align: left;
+            padding: 8px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="herro_area">
+        <section class="h-100 h-custom" style="background-color: #eee;">
+            <form method="post" action="/Home/CreateCheckoutSession">
+            <div class="container h-100 py-5">
+                <div class="row d-flex justify-content-center align-items-center h-100">
+                    <div class="col">
+              @if (Model != null && Model.CartDetails != null && Model.CartDetails.Count > 0)
+                {
+                        <div class="table-responsive" style="background-color: white;">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" class="h5" style="border-bottom: 0;">Shopping Bag</th>
+                                        <th scope="col" style="border-bottom: 0;">Price</th>
+                                        <th scope="col" style="border-bottom: 0;">Quantity</th>
+                                        <th scope="col" style="border-bottom: 0;">Total Price</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                        @foreach (var item in Model.CartDetails)
+                                        {
+                                    <tr>
+                                        <th scope="row">
+                                            <div class="d-flex align-items-center">
+                                                    @if (string.IsNullOrEmpty(item.product.Cover))
+                                                    {
+                                                            <img src="/images/noimage.png" style="width:120px;" class="img-fluid rounded-3" />
+                                                    }
+                                                    else
+                                                    {
+                                                            <img src="/images/@item.product.Cover" style="width:120px" class="img-fluid rounded-3" />
+                                                    }
+                                                <div class="flex-column ms-4">
+                                                            <p id="textp" class="mb-2">@item.product.Name</p>
+                                                    @* <p id="textp" class="mb-0">Daniel Kahneman</p> *@
+                                                </div>
+                                            </div>
+                                        </th>
+                                        <td class="align-middle">
+                                                    <p class="mb-0" style="font-weight: bold;" style="border-bottom-width: 0;">@item.product.Price</p>
+                                        </td>
+                                        <td class="align-middle">
+                                            <div class="d-flex flex-row">
+                                                <a id="butt" class="btn btn-link px-2"
+                                                           href="/cart/removeitem?ProductId=@item.ProductId">
+                                                            <i class="fas fa-minus"></i>
+                                                </a>
+
+                                                        <input id="form-style" min="1" name="quantity" value="@item.Quantity" type="text"
+                                                               class="form-control form-control-sm" style="width: 50px;" readonly />
+
+
+                                                <a id="butt" class="btn btn-link px-2"
+                                                                href="/Cart/AddItem?ProductId=@item.ProductId&&redirect=1">
+                                                            <i class="fas fa-plus"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                        <td class="align-middle">
+                                                    <p class="mb-0" style="font-weight: bold;">@(item.product.Price * item.Quantity)</p>
+                                        </td>
+                                    </tr>
+                                    }
+                                </tbody>
+                            </table> 
+                        </div>
+                            <div class="my-2">
+                                <h5 class="totalp">Total Price: @(Model.CartDetails.Select(item => item.product.Price * item.Quantity).Sum())$</h5>
+                                    <input type="hidden" id="amount" name="amount">
+                            </div>
+
+                            <div class="my-2">
+                                <button id ="butt1" class="btn btn-link px-2" type="submit">Checkout</button>
+                            </div>
+                            
+                         }
                         else
                         {
-                            <img src="/images/@item.product.Cover" style="width:80px;height:100px" />
+                            
+                            <div class="alert alert-warning mt-5">
+                                <h4 class="alert-heading"> Cart Is Empty <i class="bi bi-cart-x"></i></h4>
+                                <p class="mb-0">No Products were added yet.</p>
+                            </div>
                         }
-                    </td>
-                    
-                    <td>@item.product.Price X @item.Quantity</td>
-                    <td>@(item.product.Price * item.Quantity)</td>
-                    <td>
-                        <a class="btn btn-info" href="/Cart/AddItem?ProductId=@item.ProductId&&redirect=1">+</a>
-                        <a class="btn btn-info" href="/cart/removeitem?ProductId=@item.ProductId">-</a>
-                    </td>
-                </tr>
-            }
-        </table>
+                   </div>
+              </div>
+       </div>
+       </form>
+        </section>
+    </div>
+    <script>
+        // Get the element containing the total price
+        var totalPriceElement = document.querySelector('.totalp');
 
-        <div class="my-2">
-            <h5>Total(INR): </h5>
-            @(Model.CartDetails.Select(item => item.product.Price * item.Quantity).Sum())
-        </div>
+        // Get the text content of the element
+        var totalPriceText = totalPriceElement.textContent;
 
-        <div class="my-2">
-            <a class="btn btn-primary" href="/Cart/Checkout">Checkout</a>
-        </div>
+        // Extract the price from the text content (assuming it's always at the end)
+        var totalPrice = totalPriceText.match(/\d+(\.\d+)?/)[0];
 
-    }
-    else
-    {
-        <h5>Cart is empty</h5>
-    }
-</div>
-
+        // Set the extracted price as the value of the hidden input field
+        document.getElementById('amount').value = totalPrice;
+    </script>
+</body>

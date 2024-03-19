@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using NToastNotify;
 
 namespace IVoice.Controllers
 {
@@ -7,10 +8,12 @@ namespace IVoice.Controllers
     public class CartController : Controller
     {
         private readonly ICartRepository _cartRepo;
+        private readonly IToastNotification _toastNotification;
 
-        public CartController(ICartRepository cartRepo)
+        public CartController(ICartRepository cartRepo,IToastNotification toastNotification )
         {
             _cartRepo = cartRepo;
+           _toastNotification = toastNotification;
         }
         public async Task<IActionResult> AddItem(int productId, int qty = 1, int redirect = 0)
         {

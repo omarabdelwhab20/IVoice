@@ -20,6 +20,8 @@
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.EntityFrameworkCore" Version="8.0.1" />
+    <PackageReference Include="NToastNotify" Version="8.0.0" />
+    <PackageReference Include="Stripe.net" Version="43.18.0" />
   </ItemGroup>
 
 </Project>

@@ -3,6 +3,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
 
+using Microsoft.Extensions.Hosting;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+
 namespace IVoice.Reopsitories
 {
     public class CartRepository : ICartRepository
@@ -181,6 +186,53 @@ namespace IVoice.Reopsitories
                 return false;
             }
         }
+        public class OrderStatusUpdaterService : IHostedService, IDisposable
+        {
+            private readonly IServiceProvider _services;
+            private Timer _timer;
+
+            public OrderStatusUpdaterService(IServiceProvider services)
+            {
+                _services = services;
+            }
+
+            public Task StartAsync(CancellationToken cancellationToken)
+            {
+                _timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromMinutes(1)); // Run every Minute
+                return Task.CompletedTask;
+            }
+
+            private void DoWork(object state)
+            {
+                using (var scope = _services.CreateScope())
+                {
+                    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                    var ordersPendingForMoreThanAnHour = dbContext.Orders
+                        .Where(o => o.OrderStatusId == 1 && DateTime.UtcNow > o.CreateDate.AddMinutes(1))
+                        .ToList();
+
+                    foreach (var order in ordersPendingForMoreThanAnHour)
+                    {
+                        order.OrderStatusId = 3; // Update order status to "processing" or whatever suits your business logic
+                    }
+
+                    dbContext.SaveChanges();
+                }
+            }
+
+            public Task StopAsync(CancellationToken cancellationToken)
+            {
+                _timer?.Change(Timeout.Infinite, 0);
+                return Task.CompletedTask;
+            }
+
+            public void Dispose()
+            {
+                _timer?.Dispose();
+            }
+        }
+
+
 
         private string GetUserId()
         {

@@ -1,8 +1,11 @@
 ﻿using IVoice.Models.DTO;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace IVoice.Controllers
 {
+    [Authorize]
     public class ProductController : Controller
     {
         private readonly IProduct _product;
@@ -12,6 +15,7 @@ namespace IVoice.Controllers
             _product = product;
         }
         [HttpGet]
+        
         public async Task<IActionResult> Index(string sTerm="")
         {
             IEnumerable<Product> products=await _product.GetProducts(sTerm);
@@ -23,6 +27,7 @@ namespace IVoice.Controllers
             return View(model);
         }
         [HttpGet]
+        [Authorize(Roles ="Admin")]
         public IActionResult Products()
         {
 
@@ -30,12 +35,19 @@ namespace IVoice.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Details(int id)
+        public IActionResult Details(int? id)
         {
-            return View( _product.getById(id));
+
+            if (id == null)
+                return BadRequest();
+            var Pproduct = _product.getById(id);
+            if (Pproduct == null)
+                return NotFound();
+            return  View( _product.getById(id));
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return View();
@@ -43,6 +55,7 @@ namespace IVoice.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create(ProductViewModel productViewModel)
         {
             if (!ModelState.IsValid)
@@ -53,6 +66,7 @@ namespace IVoice.Controllers
             return RedirectToAction(nameof(Index));
         }
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public IActionResult Update(int id)
         {
             var product = _product.getById(id);
@@ -74,6 +88,7 @@ namespace IVoice.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update(UpdateProductViewModel updateProductViewModel)
         {
             if (!ModelState.IsValid)
@@ -90,6 +105,7 @@ namespace IVoice.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Roles = "Admin")]
         public IActionResult Delete(int id)
         {
             var isDeleted = _product.Delete(id);

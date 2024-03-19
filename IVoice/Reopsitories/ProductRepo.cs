@@ -40,7 +40,7 @@ namespace IVoice.Reopsitories
                  .AsNoTracking()
                  .ToList();
         }
-        public Product? getById(int id)
+        public Product getById(int? id)
         {
             var product = dbContext.products.SingleOrDefault(p => p.Id == id);
             return product;

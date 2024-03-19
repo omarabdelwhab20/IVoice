@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace IVoice.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class RoleController : Controller
     {
         private readonly RoleManager<IdentityRole> roleManager;
@@ -16,20 +17,20 @@ namespace IVoice.Controllers
             this.roleManager = roleManager;
             this.applicationDbContext = applicationDbContext;
         }
-        [Authorize(Roles = "Admin")]
+     
         public IActionResult Index()
         {
             ViewBag.Roles = applicationDbContext.Roles.ToList();
             return View();
         }
         [HttpGet]
-        [Authorize(Roles = "Admin")]
+      
         public IActionResult NewRole()
         {
             return View();
         }
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> NewRole(RoleViewModel roleViewModel)
         {
             if (ModelState.IsValid)

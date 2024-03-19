@@ -1,0 +1,91 @@
+﻿@model Product
+@{
+    ViewData["Title"]=Model.Name;
+    Layout = "~/Views/Shared/_CustomLayout.cshtml";
+}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.css"
+          integrity="sha512-Cb0WDP6lVyVaQJulFMEOBGpkgqU6UAOEBpthbb9BfdhmUXnmYQwobuCm6Xp2YYL6Pd/l0ZA5Up/ijp0fu+nFpQ=="
+          crossorigin="anonymous" />
+    <link rel="stylesheet" href="~/css/details.css">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+
+    <!-- font awesome style -->
+    <link href="css/font-awesome.min.css" rel="stylesheet" />
+
+    <!-- Custom styles for this template -->
+     
+    <link href="details.css" rel="stylesheet" />
+    <!-- responsive style -->
+    <link href="css/responsive.css" rel="stylesheet" />
+    <style>
+        /* Custom color for success alert */
+        .swal-custom-class {
+            background-color: rgb(115, 53, 183); /* Change this to your desired color */
+            color: #ffffff; /* Text color */
+        }
+
+    </style>
+
+</head>
+<div class="herro_area">
+    
+    <div class="details-main">
+        <h2 class="main-title">Product details</h2>
+        <div class="container">
+            <div class="box">
+                <div class="img-box">
+                    <div class="image">
+                        
+                        <img src="/images/@Model.Cover"/>
+                    </div>
+                </div>
+                <div class="content">
+                    <h3>@Model.Name</h3>
+                    <p>@Model.Description</p>
+                     <p class="price">Price: @Model.Price$ <p>
+                        <a asp-action="Index"><button class="btn">Back to list</button></a>
+                            @if (User.IsInRole("User"))
+                            {
+                              <button type="button" onclick="add(@Model.Id)" class="btn-cart">Add to cart</button>
+                            }
+                          
+                </div>
+            </div>
+            </div>
+            </div>
+            </div>
+@section Scripts {
+    <script>
+        async function add(productId) {
+            try {
+                var response = await fetch(`/Cart/AddItem?productId=${productId}`);
+                if (response.status == 200) {
+                    Swal.fire({
+                        position: "top-end",
+                        icon: "success",
+                        title: "Item added to cart",
+                        showConfirmButton: false,
+                        timer: 1500,
+                        customClass: {
+                            popup: 'swal-custom-class'
+                        }
+
+                    });
+                    var result = await response.json();
+                    console.log(result);
+                    var cartCountEl = document.getElementById("cartCount");
+                    cartCountEl.innerHTML = result;
+                }
+
+            }
+            catch (err) {
+                console.log(err);
+            }
+        }
+    </script>
+}

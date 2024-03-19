@@ -1,14 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
-
+﻿
 namespace IVoice.ViewModel
 {
     public class Registerviwemodel
     {
-   
-        public string Username { get; set; }
+        [Required]
+       public string Username { get; set; }
  
         [DataType(DataType.EmailAddress)]
         [RegularExpression("^[a-z0-9_\\+-]+(\\.[a-z0-9_\\+-]+)*@[a-z0-9-]+(\\.[a-z0-9]+)*\\.([a-z]{2,4})$", ErrorMessage = "Invalid email format.")]
+        [UniqueEmail(ErrorMessage = "Email address is already in use.")]
         public string Email { get; set; }
 
         [DataType(DataType.Password)]

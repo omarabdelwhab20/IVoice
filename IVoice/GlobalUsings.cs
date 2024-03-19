@@ -7,3 +7,4 @@ global using IVoice.Settings;
 global using IVoice.Attributes;
 global using IVoice.ViewModel;
 global using Microsoft.AspNetCore.Http;
+global using System.Linq;

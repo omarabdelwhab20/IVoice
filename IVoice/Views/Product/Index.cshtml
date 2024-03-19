@@ -1,66 +1,97 @@
-﻿@model ProductDisplayModel
+﻿@model  ProductDisplayModel
 @{
-    ViewData["Title"] = "Products Page";
+    ViewData["Title"] = "Products";
+    Layout = "~/Views/Shared/_CustomLayout.cshtml";
 }
+<head>
+    <style>
+        /* Custom color for success alert */
+        .swal-custom-class {
+            background-color: rgb(115, 53, 183); /* Change this to your desired color */
+            color: #ffffff; /* Text color */
+        }
 
-<div class="my-3">
-    <form class="row gy-2 align-items-center">
-        <div class="col-auto">
-            <input type="text" class="form-control mb-2 mb-md-0" id="sterm" value="@Model.STerm" name="sterm" placeholder="Search by name">
-        </div>
-        <div class="col-auto">
-            <button type="submit" class="btn btn-primary">Search</button>
-            <a href="/Product/Index" class="btn btn-dark">Reset</a>
-        </div>
-    </form>
-</div>
-
-
-
-<div class="w-100 mt-4 d-flex flex-wrap">
-    @foreach (var product in Model.products)
-    {
-
-        <div class="card mx-2 mb-4" style="width: 16rem;">
-            @if (string.IsNullOrEmpty(product.Cover))
-            {
-                <img style="width:100%;height:180px" src="/images/noimage.png" class="card-img-top" alt="...">
-            }
-            else
-            {
-                <img style="width:100%;height:180px" src="/images/@product.Cover" class="card-img-top" alt="...">   
-            }
            
-            <div class="card-body">
-                <h5 class="card-title">@product.Name</h5>
-                <p class="card-text">
-                    <b>Price: </b>@product.Price <br />
-                    <b>Description: </b>@product.Description
-                </p>
+    </style>
+</head>
 
-                <button type="button" onclick="add(@product.Id)" class="btn btn-primary">Add to cart</button>
+<body>
+    <!-- Start Articles -->
+    <div class="articles" id="articles">
+        <h2 class="main-title">PRODUCTS</h2>
+        <div class="my-3">
+            <div class="search">
+                <form class="row">
+                    <div class="col-one">
+                        <input type="text" class="by-name" id="sterm" value="@Model.STerm" name="sterm" placeholder="Search by name">
+                    </div>
+                    <div class="col-one">
+                        <button type="submit" class="btn-search">Search</button>
+                        <a href="/Product/Index" class="btn-search">Reset</a>
 
+                    </div>
+                </form>
             </div>
         </div>
-    }
-</div>
-@section Scripts {
-    <script>
-        
-        async function add(productId) {
-            try {
-                var response = await fetch(`/Cart/AddItem?productId=${productId}`);
-                if (response.status == 200) {
-                    var result = await response.json();
-                    console.log(result);
-                    var cartCountEl = document.getElementById("cartCount");
-                    cartCountEl.innerHTML = result;
- 
+        <div class="container">
+            @foreach (var product in Model.products)
+            {
+                <div class="box">
+                    @if (string.IsNullOrEmpty(product.Cover))
+                    {
+                        <img style="width:100%;height:180px" src="/images/noimage.png" class="card-img-top" alt="...">
+                    }
+                    else
+                    {
+                        <img style="width:100%;height:180px" src="/images/@product.Cover" class="card-img-top" alt="...">
+                    }
+                    <div class="content">
+                       <b><h4>@product.Name</h4></b> 
+                        <b>Price: </b>@product.Price<br />
+                        <b>Description: </b> @(product.Description.Length > 75 ? $"{product.Description.Substring(0, 75)}..." : product.Description)
+                    </div>
+                    <div class="info">
+                        @if (User.IsInRole("User"))
+                        {
+                            <button type="button" onclick="add(@product.Id)" class="btn-cart">Add to cart</button>
+                        }
+                        <a asp-action="Details" asp-route-id="@product.Id">Details</a>
+                        <i class="fas fa-long-arrow-alt-right"></i>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="spikes"></div>
+    <!-- End Articles -->
+    @section Scripts {
+        <script>
+            async function add(productId) {
+                try {
+                    var response = await fetch(`/Cart/AddItem?productId=${productId}`);
+                    if (response.status == 200) {
+                        Swal.fire({
+                            position: "top-end",
+                            icon: "success",
+                            title: "Item added to cart",
+                            showConfirmButton: false,
+                            timer: 1500,
+                            customClass: {
+                                popup: 'swal-custom-class'
+                            }
+
+                        });
+                        var result = await response.json();
+                        console.log(result);
+                        var cartCountEl = document.getElementById("cartCount");
+                        cartCountEl.innerHTML = result;
+                    }
+
+                }
+                catch (err) {
+                    console.log(err);
                 }
             }
-            catch (err) {
-                console.log(err);
-            }
-        }
-    </script>
-}
+        </script>
+    }
+</body>

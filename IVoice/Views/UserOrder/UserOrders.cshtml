@@ -1,74 +1,133 @@
 ﻿@model IEnumerable<Order>
 @{
+    ViewData["Title"] = "UserOrders";
+    Layout = "~/Views/Shared/_CustomLayout.cshtml";
 }
-<div style="width:100%" class="mt-2">
-    <a href="/Product/index" class="btn btn-primary my-2">Back</a>
 
-    <h4>My Orders</h4>
-    @if (Model != null && Model.Count() > 0)
-    {
-        <table class="table table-striped">
-            <tr>
-                <th>OrderDate</th>
-                <th>OrderStatus</th>
-            </tr>
-            @foreach (var order in Model)
-            {
-                <tr>
-                    <td>@order.CreateDate.ToString("dd-MM-yyyy")</td>
-                    <td>@order.OrderStatus.StatusName</td>
-                </tr>
-                @if (order.OrderDetail != null && order.OrderDetail.Count > 0)
-                {
-                    <tr>
-                        <td>
-                            <table class="table table-striped">
-                                <tr>
-                                    <td>
-                                        Total:
-                                    </td>
-                                    <td>
-                                        @(order.OrderDetail.Select(item => item.Product.Price * item.Quantity).Sum())
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.css"
+          integrity="sha512-Cb0WDP6lVyVaQJulFMEOBGpkgqU6UAOEBpthbb9BfdhmUXnmYQwobuCm6Xp2YYL6Pd/l0ZA5Up/ijp0fu+nFpQ=="
+          crossorigin="anonymous" />
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" />
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
 
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>product</th>
-                                    <th>Image</th>
-                                    <th>Unit Price(INR)</th>
-                                    <th>Total Price</th>
-                                </tr>
-                                @foreach (var item in order.OrderDetail)
-                                {
+    <!-- font awesome style -->
+    <link href="css/font-awesome.min.css" rel="stylesheet" />
+    <!-- <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.1.0/mdb.min.css"
+      rel="stylesheet"
+    /> -->
+    <!-- Custom styles for this template -->
+    <link href="css/style.css" rel="stylesheet" />
+    <link href="~/css//cart.css" rel="stylesheet" />
+    <!-- responsive style -->
+    <link href="css/responsive.css" rel="stylesheet" />
+    <style>
+        /* Add border styling for table */
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid #eee;
+            text-align: left;
+            padding: 8px;
+        }
+
+    </style>
+</head>
+<div class="herro_area">
+    <section class="h-100 h-custom" style="background-color: #eee;">
+        <div class="container h-100 py-5">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col">
+                    @if (Model != null && Model.Count() > 0)
+                    {
+                        <div class="table-responsive" style="background-color: white;">
+                            <table class="table">
+                                <thead>
                                     <tr>
-                                        <td>@item.Product.Name</td>
-                                        <td>
-                                            @if (string.IsNullOrEmpty(item.Product.Cover))
-                                            {
-                                                <img src="/images/NoImage.png" style="width:80px;height:100px" />
-                                            }
-                                            else
-                                            {
-                                                <img src="/images/@item.Product.Cover" style="width:80px;height:100px" />
-                                            }
-                                        </td>
-                                        <td>@item.Product.Price X @item.Quantity</td>
-                                        <td> @(item.Product.Price * item.Quantity) </td>
+                                        <th scope="col" class="h5" style="border-bottom: 0;">OrderDate</th>
+                                        <th scope="col" style="border-bottom: 0;">OrderStatus</th>
                                     </tr>
-                                }
+                                </thead>
+                                <tbody style="background-color:transparent">
+                                    @foreach (var order in Model)
+                                    {
+                                        <tr>             
+                                            <td class="align-middle"><p class="mb-0" style="font-weight: bold;" style="border-bottom-width: 0;">@order.CreateDate.ToString("dd-MM-yyyy")</p></td>
+                                            <td class="align-middle"><p class="mb-0" style="font-weight: bold;" style="border-bottom-width: 0;">@order.OrderStatus.StatusName </p></td>
+                                        </tr>
+                                    
+                                    @if (order.OrderDetail != null && order.OrderDetail.Count > 0)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <table class="table table-striped">
+                                                    <tr>
+                                                            <td class="align-middle">
+                                                            Total:
+                                                        </td>
+                                                            <td class="align-middle">
+                                                            @(order.OrderDetail.Select(item => item.Product.Price * item.Quantity).Sum())
+                                                        </td>
+                                                    </tr>
+                                                        <tr>
+                                                            <th scope="col" style="border-bottom: 0;">product</th>
+                                                            <th scope="col" style="border-bottom: 0;">Image</th>
+                                                            <th scope="col" style="border-bottom: 0;">Unit Price(INR)</th>
+                                                            <th scope="col" style="border-bottom: 0;">Total Price</th>
+                                                        </tr>
+                                                        @foreach (var item in order.OrderDetail)
+                                                        {
+                                                            <tr>
+                                                                <td class="align-middle">@item.Product.Name</td>
+                                                                <td class="align-middle">
+                                                                    @if (string.IsNullOrEmpty(item.Product.Cover))
+                                                                    {
+                                                                        <img src="/images/NoImage.png" style="width:80px;height:100px" />
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <img src="/images/@item.Product.Cover" style="width:80px;height:100px" />
+                                                                    }
+                                                                </td>
+                                                                <td class="align-middle">@item.Product.Price X @item.Quantity</td>
+                                                                <td class="align-middle"> @(item.Product.Price * item.Quantity) </td>
+                                                            </tr>
+                                                        }
+                                                        </table>
+                                                        </td>
+                                        </tr>
+                                    }
+                                    }
+                                </tbody>
                             </table>
-                        </td>
-                    </tr>
-                }
-            }
-        </table>
+                        </div>
+                       
 
-    }
-    else
-    {
-        <h5>No orders</h5>
-    }
+                       
+                    }
+                    else
+                    {
+                        <div class="alert alert-warning mt-5">
+                            <h4 class="alert-heading">  No orders <i class="bi bi-x-square"></i></h4>
+                            <p class="mb-0">No orders have were made yet.</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
 </div>
+
 
 
 
