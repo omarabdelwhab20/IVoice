@@ -1,0 +1,24 @@
+﻿@model IEnumerable<OrdersDisplayModel>
+
+<h2>Orders</h2>
+
+
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Order Id</th>
+            <th scope="col">User Name</th>
+            <th scope="col">Created At</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var item in Model)
+        {
+            <tr>
+                <th scope="row">@item.OrderId</th>
+                <td>@item.UserName</td>
+                <td>@item.CreatedAt</td>
+            </tr>
+        }
+    </tbody>
+</table>

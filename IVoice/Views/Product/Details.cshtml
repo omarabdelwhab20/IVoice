@@ -48,6 +48,7 @@
                     <h3>@Model.Name</h3>
                     <p>@Model.Description</p>
                      <p class="price">Price: @Model.Price$ <p>
+                    <p class="price">Quantity: @Model.Quantity$ <p>
                         <a asp-action="Index"><button class="btn">Back to list</button></a>
                             @if (User.IsInRole("User"))
                             {

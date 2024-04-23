@@ -33,11 +33,17 @@ namespace IVoice
              .AddDefaultTokenProviders();
             builder.Services.AddControllersWithViews();
             builder.Services.AddTransient<IProduct, ProductRepo>();
+            builder.Services.AddTransient<IAdminRepository, AdminRepository>();
+
             builder.Services.AddTransient<ICartRepository, CartRepository>();
             builder.Services.AddTransient<IUserOrderRepository, UserOrderRepository>();
+
+
+
+
             builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("StripeSettings"));
             builder.Configuration.GetValue<string>("StripeSettings:SecretKey");
-            builder.Services.AddHostedService<OrderStatusUpdaterService>();
+            //builder.Services.AddHostedService<OrderStatusUpdaterService>();
           
 
             var app = builder.Build();

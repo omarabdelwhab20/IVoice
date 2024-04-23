@@ -8,3 +8,4 @@ global using IVoice.Attributes;
 global using IVoice.ViewModel;
 global using Microsoft.AspNetCore.Http;
 global using System.Linq;
+global using System.Net.Mail;

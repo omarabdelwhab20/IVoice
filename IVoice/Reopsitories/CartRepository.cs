@@ -3,10 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
 
-using Microsoft.Extensions.Hosting;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
+ 
 
 namespace IVoice.Reopsitories
 {
@@ -171,6 +168,12 @@ namespace IVoice.Reopsitories
                         UnitPrice = item.UnitPrice
                     };
                     _db.OrderDetails.Add(orderDetail);
+                    var product = await _db.products.FindAsync(item.ProductId);
+                    if (product is null)
+                        throw new Exception("Product not found");
+                    if (product.Quantity < item.Quantity)
+                        throw new Exception("Insufficient quantity available");
+                    product.Quantity -= item.Quantity;
                 }
                 _db.SaveChanges();
 
@@ -186,51 +189,51 @@ namespace IVoice.Reopsitories
                 return false;
             }
         }
-        public class OrderStatusUpdaterService : IHostedService, IDisposable
-        {
-            private readonly IServiceProvider _services;
-            private Timer _timer;
+        //public class OrderStatusUpdaterService : IHostedService, IDisposable
+        //{
+        //    private readonly IServiceProvider _services;
+        //    private Timer _timer;
 
-            public OrderStatusUpdaterService(IServiceProvider services)
-            {
-                _services = services;
-            }
+        //    public OrderStatusUpdaterService(IServiceProvider services)
+        //    {
+        //        _services = services;
+        //    }
 
-            public Task StartAsync(CancellationToken cancellationToken)
-            {
-                _timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromMinutes(1)); // Run every Minute
-                return Task.CompletedTask;
-            }
+        //    public Task StartAsync(CancellationToken cancellationToken)
+        //    {
+        //        _timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromMinutes(1)); // Run every Minute
+        //        return Task.CompletedTask;
+        //    }
 
-            private void DoWork(object state)
-            {
-                using (var scope = _services.CreateScope())
-                {
-                    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-                    var ordersPendingForMoreThanAnHour = dbContext.Orders
-                        .Where(o => o.OrderStatusId == 1 && DateTime.UtcNow > o.CreateDate.AddMinutes(1))
-                        .ToList();
+        //    private void DoWork(object state)
+        //    {
+        //        using (var scope = _services.CreateScope())
+        //        {
+        //            var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        //            var ordersPendingForMoreThanAnHour = dbContext.Orders
+        //                .Where(o => o.OrderStatusId == 1 && DateTime.UtcNow > o.CreateDate.AddMinutes(1))
+        //                .ToList();
 
-                    foreach (var order in ordersPendingForMoreThanAnHour)
-                    {
-                        order.OrderStatusId = 3; // Update order status to "processing" or whatever suits your business logic
-                    }
+        //            foreach (var order in ordersPendingForMoreThanAnHour)
+        //            {
+        //                order.OrderStatusId = 3; // Update order status to "processing" or whatever suits your business logic
+        //            }
 
-                    dbContext.SaveChanges();
-                }
-            }
+        //            dbContext.SaveChanges();
+        //        }
+        //    }
 
-            public Task StopAsync(CancellationToken cancellationToken)
-            {
-                _timer?.Change(Timeout.Infinite, 0);
-                return Task.CompletedTask;
-            }
+        //    public Task StopAsync(CancellationToken cancellationToken)
+        //    {
+        //        _timer?.Change(Timeout.Infinite, 0);
+        //        return Task.CompletedTask;
+        //    }
 
-            public void Dispose()
-            {
-                _timer?.Dispose();
-            }
-        }
+        //    public void Dispose()
+        //    {
+        //        _timer?.Dispose();
+        //    }
+        //}
 
 
 

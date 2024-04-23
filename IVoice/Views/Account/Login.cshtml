@@ -52,9 +52,13 @@
                     @* @Html.ActionLink("Forgot Password?", "ForgotPassword", "Account", null, new { @class = "forgot-password" }) <!--لسة هنعمله--> *@
                     <br />
                     <button type="submit" class="btn" value="Login">Login</button>
+                    <div>
+                        <p>
+                            <a asp-area="Identity" asp-page="/Account/ForgotPassword">Forgot Password</a>
+                        </p>
+                    </div>
                 </form>
             </div>
-        </div>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>

@@ -55,7 +55,7 @@
                                 <thead>
                                     <tr>
                                         <th scope="col" class="h5" style="border-bottom: 0;">OrderDate</th>
-                                        <th scope="col" style="border-bottom: 0;">OrderStatus</th>
+                                      @*   <th scope="col" style="border-bottom: 0;">OrderStatus</th> *@
                                     </tr>
                                 </thead>
                                 <tbody style="background-color:transparent">
@@ -63,7 +63,7 @@
                                     {
                                         <tr>             
                                             <td class="align-middle"><p class="mb-0" style="font-weight: bold;" style="border-bottom-width: 0;">@order.CreateDate.ToString("dd-MM-yyyy")</p></td>
-                                            <td class="align-middle"><p class="mb-0" style="font-weight: bold;" style="border-bottom-width: 0;">@order.OrderStatus.StatusName </p></td>
+                                           @*  <td class="align-middle"><p class="mb-0" style="font-weight: bold;" style="border-bottom-width: 0;">@order.OrderStatus.StatusName </p></td> *@
                                         </tr>
                                     
                                     @if (order.OrderDetail != null && order.OrderDetail.Count > 0)

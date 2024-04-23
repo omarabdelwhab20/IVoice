@@ -48,6 +48,7 @@
                     <div class="content">
                        <b><h4>@product.Name</h4></b> 
                         <b>Price: </b>@product.Price<br />
+                        <b>Quantity </b>@product.Quantity<br />
                         <b>Description: </b> @(product.Description.Length > 75 ? $"{product.Description.Substring(0, 75)}..." : product.Description)
                     </div>
                     <div class="info">

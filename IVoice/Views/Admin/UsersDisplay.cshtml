@@ -1,0 +1,26 @@
+﻿@model IEnumerable<UsersDisplayModel>
+
+<h2>Users</h2>
+
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Address</th>
+            <th>Order Count</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.Name</td>
+                <td>@user.Email</td>
+                <td>@user.Address</td>
+                <td>@user.OrdersCount</td>
+
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,7 +1,8 @@
-﻿using IVoice.Models;
-using IVoice.ViewModel;
+﻿using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+
 
 namespace IVoice.Controllers
 {
@@ -10,12 +11,15 @@ namespace IVoice.Controllers
         private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly ApplicationDbContext context;
+        private readonly ILogger<AccountController> logger;
 
-        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager,ApplicationDbContext context)
+        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager,ApplicationDbContext context,
+            ILogger<AccountController> logger)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.context = context;
+            this.logger = logger;
         }
         [HttpGet]
         public IActionResult Register()
@@ -93,5 +97,21 @@ namespace IVoice.Controllers
             await signInManager.SignOutAsync();
             return RedirectToAction("Login");
         }
+
+        [HttpGet]
+        public async Task<IActionResult> ForgotPassword()
+        {
+            return View();
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
+        {
+
+
+            return View(model);
+        }
+
     }
 }
