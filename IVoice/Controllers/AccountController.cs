@@ -98,20 +98,9 @@ namespace IVoice.Controllers
             return RedirectToAction("Login");
         }
 
-        [HttpGet]
-        public async Task<IActionResult> ForgotPassword()
-        {
-            return View();
-        }
 
 
-        [HttpPost]
-        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
-        {
-
-
-            return View(model);
-        }
+        
 
     }
 }

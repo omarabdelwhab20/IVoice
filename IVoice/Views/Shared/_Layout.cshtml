@@ -32,48 +32,81 @@
 
     <!-- Your custom JavaScript code -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            $('#notificationIcon').click(function (e) {
-                e.preventDefault(); // Prevent default action of anchor tag
+    
 
-                $.ajax({
-                    url: '@Url.Action("OutOfStock", "Admin")',
-                    type: 'GET',
-                    dataType: 'json',
-                    success: function (data) {
-                        var $notificationList = $('#notificationList');
-                        $notificationList.empty();
-                        $.each(data, function (index, item) {
-                            // Construct list item with product name and update button
-                            var listItem = '<li>' + item.name + ' <a class="update-link" href="@Url.Action("Update", "Product")/' + item.id + '">Update</a></li>';
-                            $notificationList.append(listItem);
-                        });
-                        $notificationList.show(); // Ensure the list is visible
-                    },
-                    error: function (xhr, status, error) {
-                        console.error(xhr.responseText);
-                        alert('Error occurred while fetching data: ' + error);
-                    }
-                });
-            });
+    <style>
+        /* Styling for notification list */
+        #notificationList {
+            position: absolute;
+            top: calc(100% - 10px); /* Position slightly above the icon */
+            right: 0;
+            background-color: #fff;
+            border: 2px solid #007bff; /* Change border style here */
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 20px; /* Increase padding to accommodate the arrow */
+            width: fit-content;
+            z-index: 1000; /* Ensure it appears above other elements */
+            display: none; /* Hide by default */
+        }
 
-            // Handle click event on update links
-            $(document).on('click', '.update-link', function (e) {
-                e.preventDefault(); // Prevent default action of anchor tag
-                var updateUrl = $(this).attr('href');
-                // Redirect to the update URL
-                window.location.href = updateUrl;
-            });
+            #notificationList.active {
+                display: block; /* Show when active */
+            }
 
-            // Hide the dropdown when clicking outside of it
-            $(document).mouseup(function (e) {
-                if (!$('#notificationIcon').is(e.target) && $('#notificationList').is(':visible')) {
-                    $('#notificationList').hide(); // Hide the list when clicking outside of it
+            #notificationList::before {
+                content: "";
+                border-width: 8px;
+                border-style: solid;
+                border-color: transparent transparent #000 transparent; /* Arrow color */
+                position: absolute;
+                left: 20px; /* Adjust position as needed */
+                top: -19px; /* Adjust position as needed */
+            }
+
+            #notificationList li {
+                list-style-type: none;
+                margin-bottom: 10px; /* Increased margin */
+                position: relative; /* Position relative for pseudo-element */
+            }
+
+                #notificationList li .product-name {
+                    display: block;
+                    margin-bottom: 5px;
                 }
-            });
-        });
-    </script>
+
+                #notificationList li a.update-link {
+                    display: block;
+                    color: #007bff;
+                    text-decoration: none;
+                }
+
+                    #notificationList li a.update-link:hover {
+                        text-decoration: underline;
+                    }
+
+        /* Positioning for dropdown relative to icon */
+        .navbar-nav .nav-item {
+            position: relative;
+        }
+
+        /* Position the notification list relative to the icon */
+        .navbar-nav #notificationList {
+            position: absolute;
+            top: calc(100% + 5px);
+            right: 0;
+        }
+
+
+
+
+
+
+
+
+
+
+    </style>
 
 
 
@@ -117,7 +150,7 @@
                                 <li class="nav-item">
                                     <a class="nav-link" asp-controller="Product" asp-action="Index"> Products</a>
                                 </li>
-                                
+
 
 
                                 <div class="navbar-nav">
@@ -126,10 +159,13 @@
                                 <li class="nav-item">
                                     <a id="notificationIcon" class="nav-link" href="#">
                                         <i class="bi bi-bell-fill"></i>
-                                        <ul id="notificationList" class="dropdown-menu" style="display: none;"></ul>
+                                        <ul id="notificationList" class="dropdown-menu" style="display: none;">
+                                            <!-- Notification items will be dynamically added here -->
+                                        </ul>
                                     </a>
                                 </li>
                                 </div>
+
                                 
 
 
@@ -225,8 +261,58 @@
 
     <!-- Notification icon -->
     
-
     <script>
+        $(document).ready(function () {
+            $('#notificationIcon').click(function (e) {
+                e.preventDefault(); // Prevent default action of anchor tag
+
+                $.ajax({
+                    url: '@Url.Action("OutOfStock", "Admin")',
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        var $notificationList = $('#notificationList');
+                        $notificationList.empty();
+                        $.each(data, function (index, item) {
+                            // Construct list item with product name and update button
+                            var listItem = '<li>' + item.name + ' <a class="update-link" href="@Url.Action("Update", "Product")/' + item.id + '">Update</a></li>';
+                            $notificationList.append(listItem);
+                        });
+                        $notificationList.show(); // Ensure the list is visible
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(xhr.responseText);
+                        alert('Error occurred while fetching data: ' + error);
+                    }
+                });
+            });
+
+            // Handle click event on update links
+            $(document).on('click', '.update-link', function (e) {
+                e.preventDefault(); // Prevent default action of anchor tag
+                var updateUrl = $(this).attr('href');
+                // Redirect to the update URL
+                window.location.href = updateUrl;
+            });
+
+            // Hide the dropdown when clicking outside of it
+            $(document).mouseup(function (e) {
+                if (!$('#notificationIcon').is(e.target) && $('#notificationList').is(':visible')) {
+                    $('#notificationList').hide(); // Hide the list when clicking outside of it
+                }
+            });
+        });
+
+        $(document).ready(function () {
+            $('#notificationIcon').click(function (e) {
+                e.preventDefault(); // Prevent default action of anchor tag
+                $('#notificationList').toggleClass('active');
+            });
+
+            // Other JavaScript code remains the same...
+        });
+
+       
         loadCartCount();
         async function loadCartCount() {
             try {

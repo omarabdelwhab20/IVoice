@@ -1,4 +1,5 @@
 ﻿using IVoice.Models.DTO;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace IVoice.Reopsitories
@@ -6,9 +7,11 @@ namespace IVoice.Reopsitories
     public class AdminRepository : IAdminRepository
     {
         ApplicationDbContext dbContext { get; set; }
-        public AdminRepository(ApplicationDbContext dbContext)
+        UserManager<ApplicationUser> userManager { get; set; }
+        public AdminRepository(ApplicationDbContext dbContext, UserManager<ApplicationUser> userManager)
         {
             this.dbContext = dbContext;
+            this.userManager = userManager;
         }
 
 
@@ -21,6 +24,7 @@ namespace IVoice.Reopsitories
         {
             var usersWithOrderCount = from user in dbContext.Users
                                       join order in dbContext.Orders on user.Id equals order.UserId into userOrders
+                                       // Exclude users with the "Admin" role
                                       select new UsersDisplayModel
                                       {
                                           Name = user.UserName,

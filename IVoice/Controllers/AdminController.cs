@@ -1,4 +1,5 @@
 ﻿using IVoice.Models.DTO;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IVoice.Controllers
@@ -6,8 +7,10 @@ namespace IVoice.Controllers
     public class AdminController : Controller
     {
         IAdminRepository adminRepository;
-        public AdminController(IAdminRepository adminRepository) 
+        UserManager<ApplicationUser> userManager;
+        public AdminController(IAdminRepository adminRepository , UserManager<ApplicationUser> userManager) 
         {
+            this.adminRepository = adminRepository ;
             this.adminRepository = adminRepository;
         }
 
@@ -26,6 +29,7 @@ namespace IVoice.Controllers
 
         public IActionResult UsersDisplay()
         {
+            var usersWithUserRole = userManager.GetUsersInRoleAsync("User").Result;
             var users = adminRepository.UsersDisplay();
             return View(users);
         }
